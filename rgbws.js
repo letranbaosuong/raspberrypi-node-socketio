@@ -33,11 +33,19 @@ var Gpio = require("pigpio").Gpio, //include pigpio to interact with the GPIO
   redRGB = 255, //set starting value of RED variable to off (255 for common anode)
   greenRGB = 255, //set starting value of GREEN variable to off (255 for common anode)
   blueRGB = 255; //set starting value of BLUE variable to off (255 for common anode)
+// redRGB = 0, //set starting value of RED variable to off (0 for common cathode)
+// greenRGB = 0, //set starting value of GREEN variable to off (0 for common cathode)
+// blueRGB = 0; //set starting value of BLUE variable to off (0 for common cathode)
 
 //RESET RGB LED
 ledRed.digitalWrite(1); // Turn RED LED off
 ledGreen.digitalWrite(1); // Turn GREEN LED off
 ledBlue.digitalWrite(1); // Turn BLUE LED off
+
+// //RESET RGB LED
+// ledRed.digitalWrite(0); // Turn RED LED off
+// ledGreen.digitalWrite(0); // Turn GREEN LED off
+// ledBlue.digitalWrite(0); // Turn BLUE LED off
 
 io.sockets.on("connection", function (socket) {
   // Web Socket Connection
@@ -49,6 +57,11 @@ io.sockets.on("connection", function (socket) {
     redRGB = 255 - parseInt(data.red);
     greenRGB = 255 - parseInt(data.green);
     blueRGB = 255 - parseInt(data.blue);
+
+    // //RESET RGB LED
+    // ledRed.digitalWrite(0); // Turn RED LED off
+    // ledGreen.digitalWrite(0); // Turn GREEN LED off
+    // ledBlue.digitalWrite(0); // Turn BLUE LED off
 
     console.log("rbg: " + redRGB + ", " + greenRGB + ", " + blueRGB); //output converted to console
 
@@ -65,8 +78,14 @@ app.get("/", function (req, res) {
 
 process.on("SIGINT", function () {
   //on ctrl+c
+
   ledRed.digitalWrite(1); // Turn RED LED off
   ledGreen.digitalWrite(1); // Turn GREEN LED off
   ledBlue.digitalWrite(1); // Turn BLUE LED off
+
+  // ledRed.digitalWrite(0); // Turn RED LED off
+  // ledGreen.digitalWrite(0); // Turn GREEN LED off
+  // ledBlue.digitalWrite(0); // Turn BLUE LED off
+
   process.exit(); //exit completely
 });
